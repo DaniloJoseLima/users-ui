@@ -1,0 +1,136 @@
+<div>
+  <h1 class="title mb-5">Cadastro de usuários</h1>
+  <div *ngIf="msgError" class="alert alert-danger mt-5" role="alert">
+    {{msgError}}
+  </div>
+  <form class="example-form" [formGroup]="userForm" (ngSubmit)="onSubmit()" autocomplete="off">
+    <div class="mb-3">
+      <div *ngIf="userForm.get('id')?.value && userForm.get('picture')?.value" class="row">
+        <img class="img-fluid img-profile" [src]="userForm.get('picture')?.value">
+      </div>
+      <div class="row mb-3">
+        <div class="col-12 col-md-2 mb-3 mb-md-0">
+          <label for="title">Título</label>
+          <select class="form-select" id="floatingSelect" aria-label="Title" formControlName="title">
+            <option value="" selected>Selecione</option>
+            <option value="mr">Mr</option>
+            <option value="ms">Ms</option>
+            <option value="mrs">Mrs</option>
+            <option value="miss">Miss</option>
+            <option value="dr">Dr</option>
+          </select>
+        </div>
+        <div class="col-12 col-md mb-3 mb-md-0">
+          <label for="firstName">Nome</label>
+          <input type="text" class="form-control" formControlName="firstName" placeholder="Digite seu nome"
+            [ngClass]="{ 'error-input': userForm.get('firstName')?.hasError('required') && userForm.get('firstName')?.touched }" />
+          <div *ngIf="userForm.get('firstName')?.hasError('required') && userForm.get('firstName')?.touched"
+            class="error">
+            Campo obrigatório.
+          </div>
+        </div>
+        <div class="col-12 col-md">
+          <label for="lastName">Sobrenome</label>
+          <input type="text" class="form-control" formControlName="lastName" placeholder="Digite seu sobrenome"
+            [ngClass]="{ 'error-input': userForm.get('lastName')?.hasError('required') && userForm.get('lastName')?.touched }" />
+          <div *ngIf="userForm.get('lastName')?.hasError('required') && userForm.get('lastName')?.touched"
+            class="error">
+            Campo obrigatório.
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-12 col-lg-7 mb-3 mb-lg-0">
+          <label for="email">E-mail</label>
+          <input type="text" class="form-control" formControlName="email" placeholder="Digite seu e-mail"
+            [ngClass]="{ 'error-input': (userForm.get('email')?.hasError('required') || userForm.get('email')?.hasError('email')) && userForm.get('email')?.touched }" />
+          <div
+            *ngIf="(userForm.get('email')?.hasError('required') || userForm.get('email')?.hasError('email')) && userForm.get('email')?.touched"
+            class="error">
+            {{userForm.get('email')?.hasError('required') ? 'Campo obrigatório' : 'E-mail inválido.'}}
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-2 mb-3 mb-md-0">
+          <label for="dateOfBirth">Data de nasc.</label>
+          <input type="text" class="form-control" appMaskDate formControlName="dateOfBirth" placeholder="00/00/0000"
+            maxlength="10" [ngClass]="{ 'error-input': (userForm.get('dateOfBirth')?.hasError('required') || userForm.get('dateOfBirth')?.hasError('pattern')) && userForm.get('dateOfBirth')?.touched }" />
+          <div *ngIf="(userForm.get('dateOfBirth')?.hasError('required') || userForm.get('dateOfBirth')?.hasError('pattern')) && userForm.get('dateOfBirth')?.touched"
+            class="error">
+            <span>{{userForm.get('dateOfBirth')?.hasError('required') ? 'Campo obrigatório' : 'Formato inválido'}}</span>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg">
+          <label for="phone">Telefone</label>
+          <input type="text" class="form-control" formControlName="phone" placeholder="(XX) X XXXX-XXXX" />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <label for="gender">Gênero</label>
+          <div class="d-flex pt-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="gender" formControlName="gender" id="male"
+                value="male">
+              <label class="form-check-label cursor-pointer" for="male">
+                Masculino
+              </label>
+            </div>
+            <div class="form-check ms-3 me-3">
+              <input class="form-check-input" type="radio" name="gender" formControlName="gender" id="female"
+                value="female">
+              <label class="form-check-label cursor-pointer" for="female">
+                Feminino
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="gender" formControlName="gender" id="other"
+                value="other">
+              <label class="form-check-label cursor-pointer" for="other">
+                Outro
+              </label>
+            </div>
+          </div>
+          <div *ngIf="userForm.get('gender')?.hasError('required') && userForm.get('gender')?.touched" class="error">
+            <span>Campo obrigatório</span>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <label for="picture">URL da sua foto</label>
+          <input type="text" class="form-control" formControlName="picture" placeholder="https://suaimagem.com.br" />
+        </div>
+      </div>
+      <div class="form-group" formGroupName="location">
+        <div class="row mb-3">
+          <div class="col">
+            <label for="street">Rua</label>
+            <input type="text" class="form-control" formControlName="street" placeholder="Digite nome da sua rua" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-12 col-md mb-3 mb-md-0">
+            <label for="city">Cidade</label>
+            <input type="text" class="form-control" formControlName="city" placeholder="Digite a cidade" />
+          </div>
+          <div class="col-12 col-md">
+            <label for="state">Estado</label>
+            <input type="text" class="form-control" formControlName="state" placeholder="Digite o estado" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <label for="country">País</label>
+            <input type="text" class="form-control" formControlName="country" placeholder="Digite o país" />
+          </div>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="d-flex justify-content-between">
+          <button type="button" routerLink="/users" class="button">Voltar</button>
+          <button type="submit" class="button bg-success text-white border-success">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
