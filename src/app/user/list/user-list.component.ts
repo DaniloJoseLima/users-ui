@@ -44,7 +44,7 @@ export class UserListComponent implements OnInit {
     this.userService.findAll(userParams).subscribe(value => {
       if (value) {
         this.users = value.data;
-        this.totalPages = Math.ceil(27 / 13);
+        this.totalPages = Math.ceil(value.total / this.limit);
       }
     });
   }
